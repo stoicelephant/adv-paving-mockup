@@ -45,8 +45,8 @@ const method = preview ? "get" : "post";
   <fieldset class="grid gap-2">
     <legend class="font-semibold mb-1.5">Property type</legend>
     <div class="flex flex-wrap gap-x-8 gap-y-2">
-      <label class="inline-flex items-center gap-2.5 min-h-11 text-lg"><input type="radio" name={preview ? "ptype-preview" : "property_type"} value="Commercial" class="size-5 accent-asphalt" checked /> Commercial</label>
-      <label class="inline-flex items-center gap-2.5 min-h-11 text-lg"><input type="radio" name={preview ? "ptype-preview" : "property_type"} value="Residential" class="size-5 accent-asphalt" /> Residential</label>
+      <label class="inline-flex items-center gap-2.5 min-h-11 text-lg"><input type="radio" name="property_type" form={preview ? "preview-only" : undefined} value="Commercial" class="size-5 accent-asphalt" checked /> Commercial</label>
+      <label class="inline-flex items-center gap-2.5 min-h-11 text-lg"><input type="radio" name="property_type" form={preview ? "preview-only" : undefined} value="Residential" class="size-5 accent-asphalt" /> Residential</label>
     </div>
   </fieldset>
 
