@@ -1,0 +1,9 @@
+---
+/** Phone-first bar on small screens. */
+import { site } from "../site";
+---
+
+<div class="md:hidden fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-asphalt text-slab">
+  <a href={`tel:${site.phone.tel}`} class="flex items-center justify-center py-4 font-bold bg-paint text-asphalt">Call {site.phone.display}</a>
+  <a href="/contact" class="flex items-center justify-center py-4 font-bold">Get a free quote</a>
+</div>

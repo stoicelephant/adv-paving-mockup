@@ -1,0 +1,66 @@
+---
+/**
+ * "What does your pavement need?" The site's one standout element.
+ * Radio buttons + CSS :has(), so it works without JavaScript and with the keyboard (arrow keys move between answers).
+ */
+import { site } from "../../site";
+
+const services = Object.fromEntries(site.services.map((s) => [s.slug, s]));
+const showRules = site.needs
+  .map((n) => `.needs:has(#need-${n.key}:checked) [data-answer="${n.key}"]{display:block}`)
+  .join("\n") + `\n.needs:has(input[name="need"]:checked) [data-answer="none"]{display:none}`;
+---
+
+<section aria-labelledby="needs-h" class="needs on-dark bg-asphalt text-slab">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-16 md:py-24">
+    <div class="max-w-3xl">
+      <h2 id="needs-h" class="display text-[clamp(2.4rem,5vw,4.2rem)]">What does your pavement need?</h2>
+      <p class="mt-4 text-lg text-slab/85">Pick what you're seeing on your lot or driveway.</p>
+    </div>
+
+    <div class="mt-10 grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:gap-10 lg:items-start">
+      <fieldset>
+        <legend class="sr-only">What you're seeing</legend>
+        <div class="grid grid-cols-2 lg:grid-cols-1 gap-2.5">
+          {
+            site.needs.map((n) => (
+              <div>
+                <input type="radio" name="need" id={`need-${n.key}`} value={n.key} class="peer sr-only" />
+                <label
+                  for={`need-${n.key}`}
+                  class="flex h-full min-h-16 cursor-pointer items-center rounded-[3px] border-2 border-slab/30 px-4 py-3 text-lg font-semibold leading-snug transition-colors hover:border-slab peer-checked:border-paint peer-checked:bg-paint peer-checked:text-asphalt peer-focus-visible:outline-3 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-paint"
+                >
+                  {n.label}
+                </label>
+              </div>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <div aria-live="polite" class="rounded-[3px] bg-slab text-asphalt p-6 md:p-9 lg:sticky lg:top-28 min-h-56">
+        <div data-answer="none">
+          <p class="heading text-3xl">Pick one to see what fits.</p>
+          <p class="mt-3 text-asphalt-soft prose-width">Not sure what you're looking at? Call {site.phone.display} and describe it. Quotes are free.</p>
+        </div>
+        {
+          site.needs.map((n) => {
+            const svc = services[n.service];
+            return (
+              <div data-answer={n.key} class="hidden">
+                <p class="text-asphalt-soft font-semibold">What fits</p>
+                <p class="display mt-1 text-[clamp(2rem,3.4vw,3rem)]">{n.answer}</p>
+                <p class="mt-4 text-lg prose-width">{n.text}</p>
+                <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <a href="/contact" class="btn btn-paint">Get a free quote</a>
+                  {svc && <a href={`/services/${svc.slug}`} class="link font-semibold">More about {svc.name.toLowerCase()}</a>}
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+  <style is:inline set:html={showRules}></style>
+</section>

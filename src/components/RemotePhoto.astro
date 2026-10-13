@@ -1,0 +1,34 @@
+---
+/** A client photo from their Wix library, cropped to a ratio, with a responsive srcset. */
+import type { WixPhoto } from "../site";
+import { wixSrcset } from "../lib/wix";
+
+interface Props {
+  photo: WixPhoto;
+  alt: string;
+  /** width / height, e.g. 16/10 */
+  ratio: number;
+  widths?: number[];
+  sizes?: string;
+  align?: "c" | "t";
+  eager?: boolean;
+  class?: string;
+}
+
+const { photo, alt, ratio, widths = [480, 800, 1200, 1600], sizes = "100vw", align = "c", eager = false, class: className = "" } = Astro.props;
+const img = wixSrcset(photo, ratio, widths, align);
+---
+
+<img
+  src={img.src}
+  srcset={img.srcset}
+  sizes={sizes}
+  width={img.width}
+  height={img.height}
+  alt={alt}
+  loading={eager ? "eager" : "lazy"}
+  fetchpriority={eager ? "high" : "auto"}
+  decoding="async"
+  class:list={["block w-full h-auto object-cover bg-joint", className]}
+  style={`aspect-ratio:${ratio}`}
+/>

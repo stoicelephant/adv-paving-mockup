@@ -1,0 +1,12 @@
+// Cloudflare Workers static-assets config. No server code: Cloudflare just serves ./dist.
+// Rename "name" per client (it becomes <name>.<your-subdomain>.workers.dev for previews).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "adv-paving-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

@@ -1,0 +1,93 @@
+/*
+ * Advanced Asphalt & Concrete: design tokens (see DESIGN.md).
+ * A freshly striped lot: concrete ground, sealcoat asphalt, traffic-yellow and ADA-blue paint.
+ * All text pairs pass WCAG AA (asphalt-soft on concrete is the lowest at 5.6:1).
+ */
+@import "tailwindcss";
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/500.css";
+@import "@fontsource/barlow/600.css";
+@import "@fontsource/barlow/700.css";
+@import "@fontsource/barlow-condensed/700.css";
+@import "@fontsource/barlow-condensed/800.css";
+
+@theme {
+  --color-concrete: #d4d7d7;     /* page background: cool cement grey (kept off the warm/cream side) */
+  --color-slab: #e8eaea;         /* raised areas: picker answers, form, team */
+  --color-asphalt: #202326;      /* text, header, dark bands: sealcoat black */
+  --color-asphalt-soft: #4b5057; /* secondary text */
+  --color-joint: #aeb2b3;        /* rules and borders */
+  --color-paint: #f4c20d;        /* traffic yellow: calls to action only */
+  --color-ada: #1d4f9c;          /* accessible-parking blue: links, striping service */
+
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Barlow", ui-sans-serif, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-concrete);
+    color: var(--color-asphalt);
+    font-family: var(--font-sans);
+    font-size: 112.5%; /* 18px */
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  body { line-height: 1.55; }
+  :focus-visible {
+    outline: 3px solid var(--color-ada);
+    outline-offset: 3px;
+  }
+  .on-dark :focus-visible { outline-color: var(--color-paint); }
+  ::selection { background: var(--color-paint); color: var(--color-asphalt); }
+}
+
+@layer components {
+  /* Headlines: condensed like lettering painted on pavement. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+  .heading {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  .prose-width { max-width: 62ch; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 3rem;
+    padding: 0.7rem 1.35rem;
+    font-weight: 700;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+  }
+  .btn-paint { background: var(--color-paint); color: var(--color-asphalt); }
+  .btn-paint:hover { background: #ffd23a; }
+  .btn-asphalt { background: var(--color-asphalt); color: var(--color-slab); }
+  .btn-asphalt:hover { background: #363b40; }
+  .btn-outline { border: 2px solid currentColor; }
+  .btn-outline:hover { background: color-mix(in oklab, currentColor 12%, transparent); }
+
+  .link {
+    color: var(--color-ada);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.2em;
+  }
+  .link:hover { text-decoration-thickness: 2.5px; }
+  .on-dark .link { color: var(--color-slab); }
+}

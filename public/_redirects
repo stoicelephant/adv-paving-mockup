@@ -1,0 +1,7 @@
+# Old Wix URLs on adv-paving.com -> new pages (Cloudflare / Netlify format).
+# On Vercel, the same list lives in vercel.json.
+/general-6     /#services   301
+/about-4       /team        301
+/team-1        /team        301
+/projects-6    /            301
+/residential   /            301

@@ -1,0 +1,80 @@
+---
+/**
+ * Quote request form. Live: posts to site.form.action (Web3Forms by default).
+ * Preview: fields have no names and the form just opens /thank-you, so nothing is sent or put in the URL.
+ */
+import { site } from "../site";
+
+const preview = site.preview.enabled;
+const n = (name: string) => (preview ? undefined : name);
+const action = preview ? "/thank-you" : site.form.action;
+const method = preview ? "get" : "post";
+---
+
+<form action={action} method={method} class="grid gap-5">
+  {!preview && Object.entries(site.form.hidden).map(([name, value]) => <input type="hidden" name={name} value={value} />)}
+  {!preview && <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />}
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <label class="grid gap-1.5">
+      <span class="font-semibold">Name</span>
+      <input required name={n("name")} autocomplete="name" class="field" />
+    </label>
+    <label class="grid gap-1.5">
+      <span class="font-semibold">Company or property <span class="font-normal text-asphalt-soft">(optional)</span></span>
+      <input name={n("company")} autocomplete="organization" class="field" />
+    </label>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <label class="grid gap-1.5">
+      <span class="font-semibold">Phone</span>
+      <input required name={n("phone")} type="tel" autocomplete="tel" inputmode="tel" class="field" />
+    </label>
+    <label class="grid gap-1.5">
+      <span class="font-semibold">Email</span>
+      <input name={n("email")} type="email" autocomplete="email" class="field" />
+    </label>
+  </div>
+
+  <label class="grid gap-1.5">
+    <span class="font-semibold">Property address or city</span>
+    <input name={n("location")} autocomplete="street-address" class="field" />
+  </label>
+
+  <fieldset class="grid gap-2">
+    <legend class="font-semibold mb-1.5">Property type</legend>
+    <div class="flex flex-wrap gap-x-8 gap-y-2">
+      <label class="inline-flex items-center gap-2.5 min-h-11 text-lg"><input type="radio" name={preview ? "ptype-preview" : "property_type"} value="Commercial" class="size-5 accent-asphalt" checked /> Commercial</label>
+      <label class="inline-flex items-center gap-2.5 min-h-11 text-lg"><input type="radio" name={preview ? "ptype-preview" : "property_type"} value="Residential" class="size-5 accent-asphalt" /> Residential</label>
+    </div>
+  </fieldset>
+
+  <label class="grid gap-1.5">
+    <span class="font-semibold">What do you need?</span>
+    <select name={n("service")} class="field">
+      {site.services.map((s) => <option>{s.name}</option>)}
+      <option>Not sure yet</option>
+    </select>
+  </label>
+
+  <label class="grid gap-1.5">
+    <span class="font-semibold">Details <span class="font-normal text-asphalt-soft">(size, timing, anything else)</span></span>
+    <textarea name={n("message")} rows="4" class="field"></textarea>
+  </label>
+
+  <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+    <button type="submit" class="btn btn-paint text-lg min-h-14">Send quote request</button>
+    {preview && <p class="text-sm text-asphalt-soft">Preview: this form doesn't send anything yet.</p>}
+  </div>
+</form>
+
+<style>
+  @reference "../styles/global.css";
+  .field {
+    @apply w-full rounded-[3px] border-2 border-joint bg-concrete/40 px-3.5 py-3 text-lg text-asphalt;
+  }
+  .field:focus {
+    @apply border-asphalt bg-white;
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import { site } from "../../site";
+import RemotePhoto from "../RemotePhoto.astro";
+---
+
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-10 md:pt-16 pb-14 md:pb-20">
+  <div class="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:items-center">
+    <div>
+      <h1 class="display text-[clamp(3rem,7vw,6rem)]">{site.hero.headline}</h1>
+      <p class="mt-6 text-lg md:text-xl text-asphalt-soft prose-width">{site.hero.sub}</p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a href={`tel:${site.phone.tel}`} class="btn btn-paint text-lg md:text-xl min-h-14 px-6">Call {site.phone.display}</a>
+        <a href="/contact" class="btn btn-outline min-h-14 px-6">Get a free quote</a>
+      </div>
+
+      <p class="mt-7 text-asphalt-soft">{site.license}. DUNS {site.duns}.</p>
+    </div>
+
+    <figure>
+      <RemotePhoto photo={site.hero.photo} alt={site.hero.photoAlt} ratio={3 / 2} eager sizes="(min-width: 1024px) 48vw, 100vw" widths={[480, 720, 960, 1080]} class="rounded-[3px]" />
+    </figure>
+  </div>
+</section>

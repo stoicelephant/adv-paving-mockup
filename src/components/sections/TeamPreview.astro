@@ -1,0 +1,26 @@
+---
+import { site } from "../../site";
+import RemotePhoto from "../RemotePhoto.astro";
+---
+
+<section aria-labelledby="team-h" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-16 md:py-24">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <h2 id="team-h" class="display text-[clamp(2.4rem,5vw,4.2rem)]">The people you'll talk to</h2>
+    <a href="/team" class="link font-semibold text-lg">Meet the team</a>
+  </div>
+
+  <ul class="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+    {
+      site.team.map((p) => (
+        <li>
+          <RemotePhoto photo={p.photo} alt={`${p.name}, ${p.title}`} ratio={4 / 5} align={p.crop ?? "c"} widths={[360, 540, 720]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" class="rounded-[3px]" />
+          <h3 class="heading mt-5 text-3xl">{p.name}</h3>
+          <p class="text-asphalt-soft">{p.title}{p.area && `, ${p.area}`}</p>
+          <p class="mt-3 font-semibold">
+            <a class="link" href={`tel:${p.phone.tel}`}>{p.phone.display}</a>
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

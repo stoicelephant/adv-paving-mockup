@@ -1,0 +1,60 @@
+---
+import "../styles/global.css";
+import { site } from "../site";
+import PreviewBar from "../components/PreviewBar.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CallBar from "../components/CallBar.astro";
+import Schema from "../components/Schema.astro";
+import Consent from "../components/Consent.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Set true on pages search engines should skip (thank-you, 404). Preview mode noindexes everything. */
+  noindex?: boolean;
+  /** Set true on the thank-you page so the pixel (if consented) records a Lead. */
+  leadPage?: boolean;
+}
+
+const { title = site.seo.title, description = site.seo.description, noindex = false, leadPage = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(site.seo.ogImage, Astro.site ?? site.url).href;
+const hideFromSearch = noindex || site.preview.enabled;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {hideFromSearch && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#202326" />
+    <link rel="preconnect" href="https://static.wixstatic.com" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.shortName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <Schema />
+  </head>
+  <body class="min-h-dvh flex flex-col pb-16 md:pb-0" data-lead-page={leadPage ? "true" : undefined}>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 btn btn-paint">Skip to content</a>
+    <PreviewBar />
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <CallBar />
+    <Consent />
+  </body>
+</html>
